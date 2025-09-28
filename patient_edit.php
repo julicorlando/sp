@@ -47,15 +47,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Token de segurança inválido.';
     }
     
-    // Sanitize and validate input
+    // Sanitize and validate input - Updated fields list
     $data = [];
     $fields = [
-        'nome', 'sexo', 'estado_civil', 'data_nascimento', 'cpf', 'telefone', 
-        'endereco', 'email', 'filhos', 'filhos_quantidade', 'atendimento', 
-        'atendimento_tipo_tempo_motivo', 'religiao', 'escolaridade', 
+        'nome', 'sexo', 'estado_civil', 'data_nascimento', 'cpf', 'telefone', 'telefone_alternativo',
+        'endereco', 'email', 'possui_filhos', 'atendimento', 
+        'tipo_atendimento_ofertado', 'motivo_procura_queixa', 'escolaridade', 
         'trabalha_no_momento', 'profissao', 'toma_algum_medicamento', 
         'qual_medicamento', 'disponibilidade', 'rede_de_apoio', 
-        'contato_de_emergencia', 'motivo_e_objetivo', 'observacoes'
+        'contato_de_emergencia', 'observacoes',
+        // Novos campos para menor/tutelado
+        'e_menor_tutelado', 'responsavel_nome', 'responsavel_cpf', 
+        'responsavel_endereco', 'responsavel_contato', 'responsavel_parentesco'
     ];
     
     foreach ($fields as $field) {
@@ -70,6 +73,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate CPF
     if (!empty($data['cpf']) && !validateCPF($data['cpf'])) {
         $errors[] = 'CPF inválido.';
+    }
+    
+    // Validação específica para responsável quando menor/tutelado - EDIT
+    if ($data['e_menor_tutelado'] === 'Sim') {
+        $required_responsavel = ['responsavel_nome', 'responsavel_cpf', 'responsavel_contato', 'responsavel_parentesco'];
+        foreach ($required_responsavel as $field) {
+            if (empty($data[$field])) {
+                $errors[] = 'Quando paciente é menor/tutelado, todos os dados do responsável são obrigatórios.';
+                break;
+            }
+        }
+        // Validar CPF do responsável
+        if (!empty($data['responsavel_cpf']) && !validateCPF($data['responsavel_cpf'])) {
+            $errors[] = 'CPF do responsável inválido.';
+        }
     }
     
     // Validate phone
@@ -95,23 +113,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $sql = "UPDATE pacientes SET 
                         nome = ?, sexo = ?, estado_civil = ?, data_nascimento = ?, cpf = ?, 
-                        telefone = ?, endereco = ?, email = ?, filhos = ?, filhos_quantidade = ?, 
-                        atendimento = ?, atendimento_tipo_tempo_motivo = ?, religiao = ?, 
+                        telefone = ?, telefone_alternativo = ?, endereco = ?, email = ?, possui_filhos = ?,
+                        atendimento = ?, tipo_atendimento_ofertado = ?, motivo_procura_queixa = ?,
                         escolaridade = ?, trabalha_no_momento = ?, profissao = ?, 
                         toma_algum_medicamento = ?, qual_medicamento = ?, disponibilidade = ?, 
-                        rede_de_apoio = ?, contato_de_emergencia = ?, motivo_e_objetivo = ?, observacoes = ?,
+                        rede_de_apoio = ?, contato_de_emergencia = ?, observacoes = ?,
+                        e_menor_tutelado = ?, responsavel_nome = ?, responsavel_cpf = ?,
+                        responsavel_endereco = ?, responsavel_contato = ?, responsavel_parentesco = ?,
                         updated_at = CURRENT_TIMESTAMP
                     WHERE id = ? AND usuario_id = ?";
             
             $params = [
                 $data['nome'], $data['sexo'], $data['estado_civil'],
-                $data['data_nascimento'] ?: null, $data['cpf'], $data['telefone'],
-                $data['endereco'], $data['email'], $data['filhos'], $data['filhos_quantidade'],
-                $data['atendimento'], $data['atendimento_tipo_tempo_motivo'], $data['religiao'],
+                $data['data_nascimento'] ?: null, $data['cpf'], $data['telefone'], $data['telefone_alternativo'],
+                $data['endereco'], $data['email'], $data['possui_filhos'],
+                $data['atendimento'], $data['tipo_atendimento_ofertado'], $data['motivo_procura_queixa'],
                 $data['escolaridade'], $data['trabalha_no_momento'], $data['profissao'],
                 $data['toma_algum_medicamento'], $data['qual_medicamento'], $data['disponibilidade'],
-                $data['rede_de_apoio'], $data['contato_de_emergencia'], $data['motivo_e_objetivo'], 
-                $data['observacoes'], $patient_id, $user['id']
+                $data['rede_de_apoio'], $data['contato_de_emergencia'], $data['observacoes'],
+                $data['e_menor_tutelado'], $data['responsavel_nome'], $data['responsavel_cpf'],
+                $data['responsavel_endereco'], $data['responsavel_contato'], $data['responsavel_parentesco'],
+                $patient_id, $user['id']
             ];
             
             $db->execute($sql, $params);
@@ -191,6 +213,13 @@ require_once 'includes/header.php';
             <label for="id_telefone">Telefone:</label>
             <input type="text" name="telefone" id="id_telefone" required maxlength="15"
                    value="<?php echo htmlspecialchars($paciente['telefone']); ?>">
+        </p>
+        
+        <!-- Novo campo: Telefone Alternativo -->
+        <p>
+            <label for="id_telefone_alternativo">Telefone alternativo:</label>
+            <input type="text" name="telefone_alternativo" id="id_telefone_alternativo" maxlength="15"
+                   value="<?php echo htmlspecialchars($paciente['telefone_alternativo'] ?? ''); ?>">
         </p>
         
         <p>
