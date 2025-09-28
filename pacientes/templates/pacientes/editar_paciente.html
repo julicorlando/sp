@@ -5,6 +5,28 @@
     <title>Editar Paciente</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Style for guardian fields */
+        .guardian-fields {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        .guardian-fields h3 {
+            color: #495057;
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+        .children-quantity {
+            margin-left: 20px;
+        }
+        .conditional-field {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -13,13 +35,119 @@
 
         <form method="post" class="form-edit">
             {% csrf_token %}
-            {{ form.as_p }}
+            
+            <!-- Basic Information -->
+            <h3>Informações Básicas</h3>
+            {{ form.nome.label_tag }} {{ form.nome }}
+            {{ form.sexo.label_tag }} {{ form.sexo }}
+            {{ form.data_nascimento.label_tag }} {{ form.data_nascimento }}
+            {{ form.cpf.label_tag }} {{ form.cpf }}
+            {{ form.estado_Civil.label_tag }} {{ form.estado_Civil }}
+            
+            <!-- Contact Information -->
+            <h3>Contato</h3>
+            {{ form.telefone.label_tag }} {{ form.telefone }}
+            {{ form.telefone_alternativo.label_tag }} {{ form.telefone_alternativo }}
+            {{ form.endereco.label_tag }} {{ form.endereco }}
+            {{ form.email.label_tag }} {{ form.email }}
+            
+            <!-- Children Information -->
+            <h3>Informações Familiares</h3>
+            {{ form.possui_filhos.label_tag }} {{ form.possui_filhos }}
+            <div class="children-quantity" id="children-quantity">
+                {{ form.filhos_Quantidade.label_tag }} {{ form.filhos_Quantidade }}
+            </div>
+            
+            <!-- Minor/Guardian Information -->
+            {{ form.eh_menor_tutelado.label_tag }} {{ form.eh_menor_tutelado }}
+            <div class="guardian-fields" id="guardian-fields">
+                <h4>Informações do Responsável</h4>
+                {{ form.nome_responsaveis.label_tag }} {{ form.nome_responsaveis }}
+                {{ form.cpf_responsavel.label_tag }} {{ form.cpf_responsavel }}
+                {{ form.endereco_responsavel.label_tag }} {{ form.endereco_responsavel }}
+                {{ form.telefone_responsavel.label_tag }} {{ form.telefone_responsavel }}
+                {{ form.email_responsavel.label_tag }} {{ form.email_responsavel }}
+                {{ form.grau_parentesco.label_tag }} {{ form.grau_parentesco }}
+            </div>
+            
+            <!-- Service Information -->
+            <h3>Informações de Atendimento</h3>
+            {{ form.atendimento_anterior.label_tag }} {{ form.atendimento_anterior }}
+            {{ form.tipo_atendimento_ofertado.label_tag }} {{ form.tipo_atendimento_ofertado }}
+            {{ form.motivo_procura_queixa.label_tag }} {{ form.motivo_procura_queixa }}
+            {{ form.rede_de_apoio.label_tag }} {{ form.rede_de_apoio }}
+            
+            <!-- Other Information -->
+            <h3>Outras Informações</h3>
+            {{ form.religião.label_tag }} {{ form.religião }}
+            {{ form.escolaridade.label_tag }} {{ form.escolaridade }}
+            {{ form.trabalha_no_momento.label_tag }} {{ form.trabalha_no_momento }}
+            {{ form.profissão.label_tag }} {{ form.profissão }}
+            
+            <!-- Medical Information -->
+            <h3>Informações Médicas</h3>
+            {{ form.toma_Algum_Medicamento.label_tag }} {{ form.toma_Algum_Medicamento }}
+            <div class="conditional-field" id="medication-field">
+                {{ form.qual_Medicamento.label_tag }} {{ form.qual_Medicamento }}
+            </div>
+            {{ form.Disponibilidade.label_tag }} {{ form.Disponibilidade }}
+            {{ form.contato_de_emergência.label_tag }} {{ form.contato_de_emergência }}
+            
+            <!-- Final Information -->
+            <h3>Observações</h3>
+            {{ form.motivo_e_objetivo.label_tag }} {{ form.motivo_e_objetivo }}
+            {{ form.observações.label_tag }} {{ form.observações }}
+            
             <div class="button-group">
                 <button type="submit" class="btn-save">Salvar Alterações</button>
                 <a href="{% url 'listar_pacientes' %}" class="btn-cancel">Cancelar</a>
             </div>
         </form>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            // Handle guardian fields visibility
+            function toggleGuardianFields() {
+                const isMinor = $('#id_eh_menor_tutelado').val() === 'Sim';
+                if (isMinor) {
+                    $('#guardian-fields').show();
+                } else {
+                    $('#guardian-fields').hide();
+                }
+            }
+            
+            // Handle children quantity visibility
+            function toggleChildrenQuantity() {
+                const hasChildren = $('#id_possui_filhos').val() === 'Sim';
+                if (hasChildren) {
+                    $('#children-quantity').show();
+                } else {
+                    $('#children-quantity').hide();
+                }
+            }
+            
+            // Handle medication field visibility
+            function toggleMedicationField() {
+                const takesMedication = $('#id_toma_Algum_Medicamento').val() === 'Sim';
+                if (takesMedication) {
+                    $('#medication-field').show();
+                } else {
+                    $('#medication-field').hide();
+                }
+            }
+            
+            // Initialize visibility on page load
+            toggleGuardianFields();
+            toggleChildrenQuantity();
+            toggleMedicationField();
+            
+            // Add event listeners
+            $('#id_eh_menor_tutelado').change(toggleGuardianFields);
+            $('#id_possui_filhos').change(toggleChildrenQuantity);
+            $('#id_toma_Algum_Medicamento').change(toggleMedicationField);
+        });
+    </script>
 
 </body>
 </html>

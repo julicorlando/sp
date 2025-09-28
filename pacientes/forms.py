@@ -7,7 +7,27 @@ from django.contrib.auth.models import User
 class PacienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
-        fields = ['nome', 'sexo', 'estado_Civil', 'data_nascimento', 'cpf', 'telefone', 'endereco', 'email', 'filhos', 'filhos_Quantidade', 'atendimento', 'atendimento_Tipo_Tempo_Motivo', 'religião', 'escolaridade', 'trabalha_no_momento', 'profissão', 'toma_Algum_Medicamento', 'qual_Medicamento', 'Disponibilidade', 'rede_de_apoio', 'contato_de_emergência', 'motivo_e_objetivo', 'observações' ]
+        fields = [
+            'nome', 'sexo', 'estado_Civil', 'data_nascimento', 'cpf', 
+            'telefone', 'telefone_alternativo', 'endereco', 'email', 
+            'possui_filhos', 'filhos_Quantidade', 
+            'eh_menor_tutelado', 'nome_responsaveis', 'cpf_responsavel', 
+            'endereco_responsavel', 'telefone_responsavel', 'email_responsavel', 'grau_parentesco',
+            'atendimento_anterior', 'tipo_atendimento_ofertado', 'motivo_procura_queixa',
+            'religião', 'escolaridade', 'trabalha_no_momento', 'profissão', 
+            'toma_Algum_Medicamento', 'qual_Medicamento', 'Disponibilidade', 
+            'rede_de_apoio', 'contato_de_emergência', 'motivo_e_objetivo', 'observações'
+        ]
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make guardian fields conditional - they will be shown/hidden with JavaScript
+        guardian_fields = [
+            'nome_responsaveis', 'cpf_responsavel', 'endereco_responsavel',
+            'telefone_responsavel', 'email_responsavel', 'grau_parentesco'
+        ]
+        for field in guardian_fields:
+            self.fields[field].required = False
 
 class ArquivoForm(forms.ModelForm):
     class Meta:
@@ -31,7 +51,7 @@ class NovoUsuarioForm(UserCreationForm):
 class PagamentoForm(forms.ModelForm):
     class Meta:
         model = Pagamento
-        fields = [ 'valor', 'forma_pagamento']  # Certifique-se de incluir todos os campos necessários
+        fields = ['valor', 'forma_pagamento', 'tipo_pagamento', 'recibo_receita_saude']
 
 
 
