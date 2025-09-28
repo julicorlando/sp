@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    
+    <!-- Adicionando jQuery via CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Entrar</h2>
+        
+        {% if form.errors %}
+            <p class="error">Usuário ou senha inválidos. Tente novamente.</p>
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <div class="button-group">
+                <button type="submit" class="btn-enter">Entrar</button>
+                <button type="button" class="btn-back">Voltar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Script jQuery -->
+    <script>
+        $(document).ready(function() {
+            // Exemplo de efeito fade para a mensagem de erro
+            $(".error").hide().fadeIn(1000);
+
+            // Redireciona o usuário ao clicar no botão Voltar
+            $(".btn-back").on("click", function() {
+                if (confirm("Tem certeza de que deseja voltar sem fazer login?")) {
+                    window.location.href = "{% url 'index' %}";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

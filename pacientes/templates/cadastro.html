@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
+    
+    <!-- Adicionando jQuery via CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="cadastro-container">
+        <h2>Cadastrar Novos Usuários</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <div class="button-group">
+                <button type="submit" class="btn-cadastrar">Cadastrar</button>
+                <button type="button" class="btn-voltar">Voltar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Script jQuery -->
+    <script>
+        $(document).ready(function() {
+            // Função para o botão Voltar
+            $(".btn-voltar").on("click", function() {
+                window.location.href = "{% url 'index' %}";
+            });
+
+            // Efeito de fade no título
+            $("h2").hide().fadeIn(1000);
+
+            // Mensagem de confirmação antes do cadastro
+            $(".btn-cadastrar").on("click", function(event) {
+                if (!confirm("Tem certeza de que deseja cadastrar este usuário?")) {
+                    event.preventDefault(); // Evita o envio do formulário se o usuário cancelar
+                }
+            });
+        });
+    </script>
+</body>
+</html>

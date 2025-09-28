@@ -1,0 +1,76 @@
+/* styles.css */
+
+/* Estilos Gerais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Estilização da vavegação classe NAV-Links*/
+
+.nav-links {
+    background-color: #d0a0b4;
+    list-style-type: none; /* Remove os marcadores da lista */
+    padding: 0;
+    border-radius: 5px;
+    margin: 0;
+    display: flex; /* Torna a lista flexível */
+    justify-content: center; /* Centraliza os itens no menu */
+}
+
+.nav-links li {
+    margin: 0 15px; /* Espaçamento entre os itens */
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fff; /* Cor do texto */
+    font-weight: bold;
+    transition: color 0.3s; /* Transição suave para a cor do texto */
+}
+
+.nav-links a:hover {
+    color: #d0a0b4; /* Azul rosa ao passar o mouse */
+}
+
+/* Títulos */
+h2 {
+    color: #cc94b4; /* Cor do título */
+    margin-bottom: 20px;
+}
+
+/* Formulário */
+form {
+    background-color: #fff; /* Fundo do formulário */
+    border: 1px solid #ddd; /* Borda do formulário */
+    padding: 20px;
+    border-radius: 5px; /* Bordas arredondadas */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra do formulário */
+    margin-bottom: 20px; /* Margem inferior */
+}
+
+form button {
+    background-color: #8cacb4; /* Cor do botão */
+    color: #fff; /* Cor do texto do botão */
+    border: none; /* Sem borda */
+    padding: 10px 15px; /* Espaçamento interno do botão */
+    border-radius: 5px; /* Bordas arredondadas do botão */
+    cursor: pointer; /* Cursor ao passar o mouse */
+}
+
+form button:hover {
+    background-color: #d0a0b4; /* Cor ao passar o mouse no botão */
+}
+
+/* Link de voltar */
+a {
+    color: #8cacb4; /* Cor do link */
+    text-decoration: none; /* Sem sublinhado */
+    font-weight: bold;
+}
+
+a:hover {
+    color: #cc94b4; /* Cor ao passar o mouse no link */
+}

@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evoluções do Paciente</title>
+    <link rel="stylesheet" href="{% static 'css/evolucao.css' %}">
+    <!-- Adicionando jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <h1 class="page-title">Evoluções do Paciente</h1>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="evolucao-container">
+        
+        <!-- Adicionar Nova Evolução -->
+        <section class="nova-evolucao">
+            <h2>Adicionar Nova Evolução</h2>
+            <form id="form-evolucao" action="{% url 'adicionar_evolucao' paciente.id %}" method="post">
+                {% csrf_token %}
+                <label for="conteudo">Conteúdo:</label>
+                <textarea id="conteudo" name="conteudo" placeholder="Escreva a evolução do paciente aqui..." required></textarea>
+                <button type="submit" class="btn">Salvar Evolução</button>
+            </form>
+        </section>
+        
+        <!-- Histórico de Evoluções -->
+        <section class="lista-evolucoes">
+            <h2>Histórico de Evoluções</h2>
+            {% if evolucoes %}
+                {% for evolucao in evolucoes %}
+                    <article class="evolucao">
+                        <p class="data-evolucao"><strong>Data:</strong> {{ evolucao.data|date:"d/m/Y H:i" }}</p>
+                        <p class="conteudo-evolucao">{{ evolucao.conteudo }}</p>
+                        <div class="acoes-evolucao">
+                            <a href="{% url 'editar_evolucao' evolucao.id %}">Editar Evolução</a>
+                            <a href="{% url 'excluir_evolucao' evolucao.id %}" class="btn delete-btn excluir-evolucao">Excluir</a>
+                        </div>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <p class="sem-evolucoes">Sem evoluções registradas.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>&copy; 2024 Todos os direitos Reservados</p>
+    </footer>
+
+    <!-- Script jQuery -->
+    <script>
+        $(document).ready(function() {
+            // Exemplo de efeito de animação ao carregar a página
+            $('.page-title').hide().fadeIn(1000);
+
+            // Exemplo de alerta de confirmação ao excluir uma evolução
+            $('.excluir-evolucao').on('click', function(event) {
+                if (!confirm('Tem certeza que deseja excluir esta evolução?')) {
+                    event.preventDefault(); // Cancela a exclusão se o usuário clicar em "Cancelar"
+                }
+            });
+
+            // Efeito de rolar para a área de nova evolução ao clicar no título
+            $('.page-title').on('click', function() {
+                $('html, body').animate({
+                    scrollTop: $('.nova-evolucao').offset().top
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>

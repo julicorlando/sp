@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <tr id="payment-{{ pagamento.id }}">
+        <td>{{ pagamento.data_pagamento }}</td>
+        <td>R$ {{ pagamento.valor }}</td>
+        <td>{{ pagamento.forma_pagamento }}</td>
+        <td>
+            <form action="{% url 'excluir_pagamento' pagamento.paciente.id pagamento.id %}" method="post" style="display:inline;" class="delete-payment-form">
+                {% csrf_token %}
+                <button class="btn" type="submit" onclick="return confirm('Tem certeza que deseja excluir este pagamento?');">Excluir</button>
+            </form>
+        </td>
+    </tr>
+    
+</body>
+</html>

@@ -1,0 +1,196 @@
+body {
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%);
+    margin: 0;
+    color: #2d2d2d;
+    min-height: 100vh;
+}
+
+header {
+    background: linear-gradient(90deg, #a18cd1 0%, #fbc2eb 100%);
+    padding: 24px 0 14px 0;
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 2px 12px rgba(161,140,209,0.07);
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+header h1 {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.search-container {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.search-input {
+    width: 320px;
+    max-width: 92vw;
+    padding: 12px 16px;
+    border-radius: 16px;
+    border: 1px solid #a18cd1;
+    background: #f4f2f9;
+    font-size: 1.08rem;
+    transition: border 0.2s;
+    box-shadow: 0 2px 12px rgba(251,194,235,0.07);
+}
+
+.search-input:focus {
+    border-color: #f8b500;
+    outline: none;
+}
+
+.table-container {
+    max-width: 720px;
+    margin: 0 auto 48px auto;
+    padding: 0 12px;
+}
+
+.paciente-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.93);
+    border-radius: 16px;
+    box-shadow: 0 2px 18px rgba(161,140,209,0.12);
+    margin: 0 0 16px 0;
+    padding: 18px 18px;
+    list-style: none;
+    transition: box-shadow 0.2s, transform 0.15s;
+}
+
+.paciente-item:hover {
+    box-shadow: 0 4px 24px rgba(251,194,235,0.15);
+    transform: scale(1.01);
+}
+
+.paciente-nome {
+    font-weight: 700;
+    color: #a18cd1;
+    font-size: 1.13rem;
+    flex: 1 1 120px;
+}
+
+.paciente-item li a,
+.paciente-item li .btn {
+    text-decoration: none;
+    background: linear-gradient(90deg, #a18cd1 0%, #fbc2eb 100%);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-right: 5px;
+    transition: background 0.2s, color 0.2s, transform 0.12s;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(161,140,209,0.10);
+    display: inline-block;
+}
+
+.paciente-item li a:hover,
+.paciente-item li .btn:hover {
+    background: linear-gradient(90deg, #fbc2eb 0%, #a18cd1 100%);
+    color: #f8b500;
+    transform: scale(1.07);
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #f8b500 0%, #fbc2eb 100%);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(90deg, #fbc2eb 0%, #f8b500 100%);
+    color: #a18cd1;
+}
+
+.empty-message {
+    text-align: center;
+    font-size: 1.15rem;
+    color: #a18cd1;
+    background: rgba(255,255,255,0.85);
+    border-radius: 10px;
+    padding: 18px 0;
+    margin-top: 32px;
+    box-shadow: 0 2px 12px rgba(251,194,235,0.09);
+}
+
+@media (max-width: 600px) {
+    .table-container {
+        max-width: 98vw;
+        padding: 0 2vw;
+    }
+    .paciente-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 14px 8px;
+    }
+    .search-input {
+        width: 92vw;
+        font-size: 1rem;
+    }
+}
+
+/* MENU DE NAVEGAÇÃO MODERNO */
+nav {
+    background: linear-gradient(90deg, #a18cd1 0%, #fbc2eb 100%);
+    box-shadow: 0 2px 12px rgba(161,140,209,0.07);
+    border-radius: 0 0 18px 18px;
+    padding: 0;
+    margin-bottom: 32px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0 18px;
+    gap: 12px;
+}
+
+nav ul li {
+    margin: 0;
+}
+
+nav ul li a {
+    display: block;
+    padding: 12px 22px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.08rem;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: background 0.2s, color 0.2s, transform 0.14s;
+    background: none;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    background: linear-gradient(90deg, #fbc2eb 0%, #a18cd1 100%);
+    color: #f8b500;
+    transform: scale(1.05);
+    box-shadow: 0 2px 10px rgba(251,194,235,0.16);
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+        gap: 5px;
+        padding: 0 5px;
+    }
+    nav ul li a {
+        padding: 10px 8px;
+        font-size: 1rem;
+    }
+}

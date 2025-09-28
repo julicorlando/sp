@@ -1,0 +1,88 @@
+<!-- templates/pacientes/listar_arquivos.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Arquivos</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+<h2>Arquivos de {{ paciente.nome }}</h2>
+
+<!-- Campo de busca para filtrar arquivos -->
+<input type="text" id="fileSearch" placeholder="Buscar arquivo..." onkeyup="filtrarArquivos()">
+
+<table id="arquivosTable">
+    <thead>
+        <tr>
+            <th>Arquivo</th>
+            <th>Data do Upload</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for arquivo in arquivos %}
+            <tr>
+                <td>
+                    <a href="{{ arquivo.arquivo.url }}">{{ arquivo.arquivo.name }}</a>
+                </td>
+                <td class="upload-date">{{ arquivo.data_upload|date:"Y-m-d H:i:s" }}</td>
+                <td>
+                    <button onclick="confirmarExclusao('{{ arquivo.arquivo.url }}')">Excluir</button>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3">Nenhum arquivo encontrado.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'upload_arquivo' paciente.id %}">Upload de Novo Arquivo</a>
+<a href="{% url 'listar_pacientes' %}">Voltar</a>
+
+<!-- JavaScript -->
+<script>
+    // Função para formatar as datas de upload no formato desejado
+    document.addEventListener("DOMContentLoaded", function () {
+        const dateCells = document.querySelectorAll(".upload-date");
+        dateCells.forEach(cell => {
+            const date = new Date(cell.textContent);
+            const formattedDate = date.toLocaleDateString('pt-BR', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+            cell.textContent = formattedDate;
+        });
+    });
+
+    // Função para confirmar exclusão
+    function confirmarExclusao(url) {
+        const confirmacao = confirm("Tem certeza de que deseja excluir este arquivo?");
+        if (confirmacao) {
+            window.location.href = url;
+        }
+    }
+
+    // Função para filtrar arquivos na tabela
+    function filtrarArquivos() {
+        const input = document.getElementById("fileSearch").value.toUpperCase();
+        const table = document.getElementById("arquivosTable");
+        const tr = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < tr.length; i++) {  // Ignorar o cabeçalho
+            const td = tr[i].getElementsByTagName("td")[0];  // Coluna do nome do arquivo
+            if (td) {
+                const txtValue = td.textContent || td.innerText;
+                tr[i].style.display = txtValue.toUpperCase().includes(input) ? "" : "none";
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

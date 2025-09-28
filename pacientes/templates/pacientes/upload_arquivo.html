@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload de Arquivo</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    
+    <!-- Adicionando jQuery via CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="homepage">
+
+    <!-- Título -->
+    <header>
+        <h2>Upload de Arquivo para {{ paciente.nome }}</h2>
+    </header>
+
+    <!-- Navegação Principal -->
+    <nav aria-label="Navegação principal">
+        <ul class="nav-links">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'listar_pacientes' %}">Listar Pacientes</a></li>
+            <li><a href="{% url 'cadastrar_paciente' %}">Cadastrar Paciente</a></li>
+        </ul>
+    </nav>
+
+    <!-- Formulário de Upload -->
+    <main>
+        <form method="post" enctype="multipart/form-data" class="form-upload">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-upload">Enviar</button>
+        </form>
+    </main>
+
+    <!-- Link de Retorno -->
+    <footer>
+        <nav aria-label="Navegação de retorno">
+            <ul class="nav-links">
+                <li><a href="{% url 'detalhes_paciente' paciente.id %}" class="btn-voltar">Voltar</a></li>
+            </ul>
+        </nav>
+    </footer>
+
+    <!-- Script jQuery -->
+    <script>
+        $(document).ready(function() {
+            // Efeito de fade para o título
+            $("h2").hide().fadeIn(1000);
+
+            // Confirmação de envio de arquivo
+            $(".btn-upload").on("click", function(event) {
+                if (!confirm("Tem certeza de que deseja enviar este arquivo?")) {
+                    event.preventDefault(); // Cancela o envio se o usuário clicar em "Cancelar"
+                }
+            });
+
+            // Efeito hover para links de navegação
+            $(".nav-links a").hover(
+                function() { $(this).css("color", "#8cacb4"); },
+                function() { $(this).css("color", ""); }
+            );
+        });
+    </script>
+</body>
+</html>

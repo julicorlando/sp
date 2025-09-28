@@ -1,0 +1,11 @@
+<!-- templates/pacientes/confirmar_exclusao.html -->
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+<h2>Confirmar Exclusão</h2>
+<p>Você tem certeza que deseja excluir {{ paciente.nome }}?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Excluir</button>
+    <a href="{% url 'listar_pacientes' %}">Cancelar</a>
+</form>

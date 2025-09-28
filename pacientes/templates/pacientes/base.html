@@ -1,0 +1,33 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seu Sistema de Pacientes</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body class="homepage">
+    <nav>
+        <ul class="nav-links">
+            <li><a href="{% url 'index' %}">Página Inicial</a></li>
+            <li><a href="{% url 'listar_pacientes' %}">Acessar Sistema</a></li>
+            <li>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button class="btn-logout" type="submit">Sair</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+    <div class="actions">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Todos os direitos Reservados Stephany Caroline</p>
+    </footer>
+</body>
+</html>

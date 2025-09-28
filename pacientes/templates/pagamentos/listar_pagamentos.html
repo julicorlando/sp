@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pagamentos - {{ paciente.nome }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/detalhes.css' %}">
+</head>
+<body class="homepage">
+
+    <!-- Título da Página -->
+    <header>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'listar_pacientes' %}">Listar Pacientes</a></li>
+                <li><a href="{% url 'cadastrar_paciente' %}">Cadastrar Paciente</a></li>
+                <li>
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button class="btn" type="submit">Sair</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Tabela de Pagamentos -->
+    <main>
+        <h2>Lista de Pagamentos</h2>
+        <table class="info-table">
+            <thead>
+                <tr>
+                    <th>Data de Pagamento</th>
+                    <th>Valor</th>
+                    <th>Forma de Pagamento</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pagamento in pagamentos %}
+                <tr>
+                    <td>{{ pagamento.data_pagamento|date:"d/m/Y" }}</td>
+                    <td>{{ pagamento.forma_pagamento }}</td>
+                    <td>{{ pagamento.valor }}</td>
+                    <td><a href="#">Voltar</a></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">Nenhum pagamento encontrado.</td>
+                </tr>
+            {% endfor %}
+            
+            </tbody>
+        </table>
+
+        <!-- Botão para Adicionar Pagamento -->
+        <div class="add-payment">
+            <h3>Adicionar Novo Pagamento</h3>
+            {% if paciente.id %}
+    <a href="{% url 'adicionar_pagamento' paciente.id %}" class="btn btn-primary">Adicionar Pagamento</a>
+{% else %}
+    <p>Paciente não encontrado.</p>
+{% endif %}
+
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>&copy; 2024 Todos os direitos Reservados Stephany Caroline</p>
+    </footer>
+
+</body>
+</html>

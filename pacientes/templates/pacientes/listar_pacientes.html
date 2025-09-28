@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pacientes</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/listar.css' %}">
+    <!-- Adicionando jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Lista de Pacientes</h1>
+        <!-- Navegação -->
+        <nav>
+            <ul class="nav-links">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'listar_pacientes' %}">Listar Pacientes</a></li>
+                <li><a href="{% url 'cadastrar_paciente' %}">Cadastrar Paciente</a></li>
+                <li><a href="{% url 'cadastro' %}">Cadastrar Novo Usuário</a></li>
+                <li>
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button class="btn-logout" type="submit">Sair</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Campo de busca -->
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Buscar paciente..." class="search-input">
+    </div>
+
+    <section class="table-container">
+        {% for paciente in pacientes %}
+            <ul class="paciente-item">
+                <li class="paciente-nome">{{ paciente.nome }}</li>
+                <li><a href="{% url 'detalhes_paciente' paciente.id %}">Ver detalhes</a></li>
+                <li><a href="{% url 'excluir_paciente' paciente.id %}">Excluir</a></li>
+                <li><a href="{% url 'editar_paciente' paciente.id %}">Editar</a></li>
+                <li><a href="{% url 'adicionar_pagamento' paciente.id %}" class="btn btn-primary">Adicionar Pagamento</a></li>
+            </ul>
+        {% empty %}
+            <p class="empty-message">Nenhum paciente cadastrado.</p>
+        {% endfor %}
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Todos os direitos Reservados Stephany Caroline</p>
+    </footer>
+
+    <!-- Script jQuery para busca dinâmica -->
+    <script>
+        $(document).ready(function() {
+            $('#search').on('input', function() {
+                var value = $(this).val().toLowerCase();
+                $('.paciente-item').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().includes(value));
+                });
+            });
+        });
+    </script>
+</body>
+</html>

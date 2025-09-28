@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Pagamento</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
+</head>
+<body>
+    <!-- Navegação -->
+    <nav>
+        <ul class="nav-links">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'listar_pacientes' %}">Listar Pacientes</a></li>
+            <li><a href="{% url 'cadastrar_paciente' %}">Cadastrar Paciente</a></li>
+            <li>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button class="btn" type="submit">Sair</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+
+<h2>Registrar Pagamento para {{ paciente.nome }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Registrar Pagamento</button>
+</form>
+
+<a href="{% url 'detalhes_paciente' paciente.id %}">Voltar aos Detalhes do Paciente</a>
+
+</body>
+</html>

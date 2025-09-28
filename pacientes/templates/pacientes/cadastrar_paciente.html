@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Paciente</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cadastropacientes.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+    <script src="{% static 'js/form-validation.js' %}" defer></script>
+</head>
+<body>
+
+    <!-- Título da Página -->
+    <h1>Cadastrar Paciente</h1>
+    
+    <!-- Navegação -->
+    <nav>
+        <ul class="nav-links">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'listar_pacientes' %}">Listar Pacientes</a></li>
+            <li><a href="{% url 'cadastrar_paciente' %}">Cadastrar Paciente</a></li>
+            <li>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button class="btn" type="submit">Sair</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Formulário de Cadastro -->
+    <main>
+        <form method="post" class="form-cadastro">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-buttons">
+                <button type="submit" class="btn-primary">Salvar</button>
+                <button type="reset" class="btn-secondary">Limpar</button>
+            </div>
+        </form>
+    </main>
+
+    <!-- Rodapé -->
+    <footer>
+        <p>&copy; 2024 Todos os direitos Reservados Stephany Caroline</p>
+    </footer>
+
+</body>
+</html>

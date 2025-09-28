@@ -1,0 +1,118 @@
+body {
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%);
+    margin: 0;
+    min-height: 100vh;
+    color: #222;
+}
+
+.admin-login-container, .admin-panel-container {
+    max-width: 500px;
+    margin: 60px auto;
+    background: rgba(255,255,255,0.98);
+    box-shadow: 0 6px 32px rgba(161,140,209,0.10);
+    border-radius: 24px;
+    padding: 38px 32px 32px 32px;
+    text-align: center;
+}
+
+.admin-login-container h2, .admin-panel-container h2 {
+    color: #a18cd1;
+    font-size: 2rem;
+    margin-bottom: 32px;
+    font-weight: 700;
+}
+
+.error {
+    background-color: #ffeaea;
+    color: #c63b3b;
+    padding: 13px 0;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    border: 1px solid #eeb1b1;
+    text-align: center;
+    font-size: 1.05rem;
+}
+
+.admin-login-container form, .admin-panel-container form {
+    margin-bottom: 0;
+}
+
+.admin-login-container label,
+.admin-login-container input[type=password] {
+    display: block;
+    width: 100%;
+    margin-bottom: 12px;
+    font-size: 1.06rem;
+}
+
+.admin-login-container input[type=password] {
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1.5px solid #a18cd1;
+    background: #f4f2f9;
+    font-size: 1.09rem;
+    transition: border 0.2s;
+    box-sizing: border-box;
+}
+
+.btn-admin {
+    background: linear-gradient(90deg, #f8b500 0%, #fbc2eb 100%);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 11px 28px;
+    font-size: 1.08rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(161,140,209,0.09);
+    transition: background 0.2s, color 0.2s, transform 0.12s;
+    text-decoration: none;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    display: inline-block;
+}
+.btn-admin:hover, .btn-admin.btn-reprovar:hover {
+    background: linear-gradient(90deg, #fbc2eb 0%, #a18cd1 100%);
+    color: #f8b500;
+    transform: scale(1.04);
+}
+.btn-admin.btn-reprovar {
+    background: linear-gradient(90deg, #f44336 0%, #fbc2eb 100%);
+}
+.btn-admin.btn-logout {
+    background: linear-gradient(90deg, #a18cd1 0%, #fbc2eb 100%);
+    margin-top: 20px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 32px auto;
+    font-size: 1.03rem;
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px #e5e0f6;
+}
+
+.admin-table th, .admin-table td {
+    border: none;
+    padding: 14px 10px;
+    text-align: center;
+}
+.admin-table th {
+    background: linear-gradient(90deg, #fbc2eb 10%, #fceabb 100%);
+    color: #a18cd1;
+}
+.admin-table tr.aprovado { background: #e7ffea; }
+.admin-table tr.pendente { background: #ffeaea; }
+
+@media (max-width: 700px) {
+    .admin-login-container, .admin-panel-container {
+        max-width: 98vw;
+        padding: 22px 5vw;
+    }
+    .admin-table th, .admin-table td { padding: 7px 2px; font-size: 0.93rem; }
+}

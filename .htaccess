@@ -1,0 +1,69 @@
+# Sistema de Pacientes - URL Rewriting
+# PHP Migration from Django
+
+RewriteEngine On
+
+# Security: Block access to config files
+<Files "*.sql">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "config/*">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Security: Block access to sensitive files
+<FilesMatch "\.(log|ini|conf)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Default document
+DirectoryIndex index.php
+
+# Handle static files (CSS, JS, Images)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_URI} \.(css|js|png|jpg|jpeg|gif|ico|pdf|txt)$ [NC]
+RewriteRule ^ - [L]
+
+# Handle media files
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_URI} ^/media/ [NC]
+RewriteRule ^ - [L]
+
+# Clean URLs for main pages (optional - keeping current structure for now)
+# RewriteRule ^login/?$ login.php [L,QSA]
+# RewriteRule ^dashboard/?$ dashboard.php [L,QSA]
+# RewriteRule ^register/?$ register.php [L,QSA]
+
+# Handle 404 errors
+ErrorDocument 404 /index.php
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options DENY
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# PHP settings
+<IfModule mod_php7.c>
+    php_value session.cookie_httponly 1
+    php_value session.cookie_secure 1
+    php_value session.use_strict_mode 1
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_file_uploads 20
+</IfModule>
+
+<IfModule mod_php8.c>
+    php_value session.cookie_httponly 1
+    php_value session.cookie_secure 1
+    php_value session.use_strict_mode 1
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_file_uploads 20
+</IfModule>
