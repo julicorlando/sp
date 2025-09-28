@@ -161,6 +161,7 @@ function handleFileUpload($file, $upload_dir = MEDIA_PATH . 'uploads/') {
 
 /**
  * Get select options for forms
+ * Atualizado com as novas opções conforme melhorias solicitadas
  */
 function getSelectOptions() {
     return [
@@ -174,13 +175,15 @@ function getSelectOptions() {
             'Casado(a)' => 'Casado(a)',
             'Solteiro(a)' => 'Solteiro(a)',
             'Divorciado(a)' => 'Divorciado(a)',
-            'Viúvo(a)' => 'Viúvo(a)'
+            'Viúvo(a)' => 'Viúvo(a)',
+            'Não se aplica' => 'Não se aplica' // Nova opção adicionada
         ],
         'sim_nao' => [
             'Sim' => 'Sim',
             'Não' => 'Não'
         ],
         'escolaridade' => [
+            'Sem escolaridade' => 'Sem escolaridade', // Nova opção adicionada
             'Fundamental' => 'Fundamental',
             'Médio' => 'Médio',
             'Superior Completo' => 'Superior Completo',
@@ -194,6 +197,23 @@ function getSelectOptions() {
             'Dinheiro' => 'Dinheiro',
             'Cartão de Crédito' => 'Cartão de Crédito',
             'Cartão de Débito' => 'Cartão de Débito'
+        ],
+        // Novas opções para os campos de pagamento
+        'tipo_pagamento' => [
+            'Particular' => 'Particular',
+            'Convênio' => 'Convênio',
+            'Clínica' => 'Clínica'
+        ],
+        // Opções para grau de parentesco do responsável
+        'parentesco' => [
+            'Pai' => 'Pai',
+            'Mãe' => 'Mãe',
+            'Avô' => 'Avô',
+            'Avó' => 'Avó',
+            'Tio' => 'Tio',
+            'Tia' => 'Tia',
+            'Tutor Legal' => 'Tutor Legal',
+            'Outro' => 'Outro'
         ]
     ];
 }

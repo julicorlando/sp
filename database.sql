@@ -16,45 +16,58 @@ CREATE TABLE users (
     date_joined DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Patients table (based on Django Paciente model)
+-- Patients table (based on Django Paciente model) - Updated with new fields
 CREATE TABLE pacientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     nome VARCHAR(100) NOT NULL,
     telefone VARCHAR(15) NOT NULL,
+    telefone_alternativo VARCHAR(15) DEFAULT '', -- Novo campo: telefone alternativo
     endereco VARCHAR(255) NOT NULL,
     data_nascimento DATE,
     cpf VARCHAR(11) NOT NULL UNIQUE,
     sexo VARCHAR(10) NOT NULL,
     email VARCHAR(254) NOT NULL,
-    estado_civil VARCHAR(255) NOT NULL,
-    filhos VARCHAR(10) NOT NULL,
-    filhos_quantidade VARCHAR(10) DEFAULT '',
-    atendimento VARCHAR(10) NOT NULL,
-    atendimento_tipo_tempo_motivo VARCHAR(500) DEFAULT '',
-    religiao VARCHAR(20) DEFAULT '',
-    escolaridade VARCHAR(255) NOT NULL,
+    estado_civil VARCHAR(255) NOT NULL, -- Atualizado: incluirá "Não se aplica"
+    possui_filhos VARCHAR(10) NOT NULL, -- Alterado de "filhos" para "possui_filhos"
+    -- Campo religiao removido conforme solicitação
+    escolaridade VARCHAR(255) NOT NULL, -- Atualizado: incluirá "Sem escolaridade"
     trabalha_no_momento VARCHAR(10) NOT NULL,
     profissao VARCHAR(50) DEFAULT '',
     toma_algum_medicamento VARCHAR(10) NOT NULL,
     qual_medicamento VARCHAR(100) DEFAULT '',
     disponibilidade VARCHAR(100) DEFAULT '',
-    rede_de_apoio VARCHAR(255) DEFAULT '',
+    rede_de_apoio TEXT DEFAULT '', -- Alterado para TEXT para melhor estruturação
     contato_de_emergencia VARCHAR(100) DEFAULT '',
-    motivo_e_objetivo VARCHAR(500) DEFAULT '',
+    -- Novos campos para menor de idade/tutelado
+    e_menor_tutelado VARCHAR(10) DEFAULT 'Não', -- Indica se é menor/tutelado
+    responsavel_nome VARCHAR(100) DEFAULT '',
+    responsavel_cpf VARCHAR(11) DEFAULT '',
+    responsavel_endereco VARCHAR(255) DEFAULT '',
+    responsavel_contato VARCHAR(15) DEFAULT '',
+    responsavel_parentesco VARCHAR(50) DEFAULT '',
+    -- Separação dos campos de atendimento
+    tipo_atendimento_ofertado VARCHAR(500) DEFAULT '', -- Novo campo separado
+    motivo_procura_queixa VARCHAR(500) DEFAULT '', -- Novo campo separado (antes era motivo_e_objetivo)
+    atendimento VARCHAR(10) NOT NULL, -- Mantido para compatibilidade
     observacoes TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Payments table (based on Django Pagamento model)  
+-- Payments table (based on Django Pagamento model) - Updated with new fields
 CREATE TABLE pagamentos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     paciente_id INT NOT NULL,
     data_pagamento DATE DEFAULT (CURDATE()),
     valor DECIMAL(10,2) NOT NULL,
     forma_pagamento VARCHAR(17) NOT NULL,
+    -- Novos campos para melhorias de pagamento
+    recibo_receita_saude VARCHAR(10) DEFAULT 'Não', -- Indica se recibo foi emitido via Receita Saúde
+    tipo_pagamento VARCHAR(20) DEFAULT 'Particular', -- Particular, Convênio ou Clínica
+    valor_intermediado DECIMAL(10,2) DEFAULT NULL, -- Valor quando há intermediação (convênio/clínica)
+    observacoes_pagamento TEXT DEFAULT '', -- Observações específicas do pagamento
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (paciente_id) REFERENCES pacientes(id) ON DELETE CASCADE
 );
