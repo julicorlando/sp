@@ -86,16 +86,36 @@ require_once 'includes/header.php';
             <tr><td><strong>Escolaridade:</strong> <?php echo htmlspecialchars($paciente['escolaridade']); ?></td></tr>
             <tr><td><strong>Trabalha no Momento:</strong> <?php echo htmlspecialchars($paciente['trabalha_no_momento']); ?></td></tr>
             <tr><td><strong>Profissão:</strong> <?php echo htmlspecialchars($paciente['profissao']); ?></td></tr>
-            <tr><td><strong>Filhos:</strong> <?php echo htmlspecialchars($paciente['filhos']); ?> (<?php echo htmlspecialchars($paciente['filhos_quantidade']); ?>)</td></tr>
-            <tr><td><strong>Religião:</strong> <?php echo htmlspecialchars($paciente['religiao']); ?></td></tr>
+            
+            <!-- Campo atualizado: Possui Filhos -->
+            <tr><td><strong>Possui Filhos:</strong> <?php echo htmlspecialchars($paciente['possui_filhos'] ?? $paciente['filhos'] ?? 'N/A'); ?></td></tr>
+            
+            <!-- Campos de responsável (exibido apenas se menor/tutelado) -->
+            <?php if (($paciente['e_menor_tutelado'] ?? 'Não') === 'Sim'): ?>
+            <tr><td colspan="2"><strong>--- DADOS DO RESPONSÁVEL ---</strong></td></tr>
+            <tr><td><strong>É menor/tutelado:</strong> <?php echo htmlspecialchars($paciente['e_menor_tutelado']); ?></td></tr>
+            <tr><td><strong>Nome do Responsável:</strong> <?php echo htmlspecialchars($paciente['responsavel_nome'] ?? ''); ?></td></tr>
+            <tr><td><strong>CPF do Responsável:</strong> <?php echo htmlspecialchars($paciente['responsavel_cpf'] ?? ''); ?></td></tr>
+            <tr><td><strong>Contato do Responsável:</strong> <?php echo htmlspecialchars($paciente['responsavel_contato'] ?? ''); ?></td></tr>
+            <tr><td><strong>Grau de Parentesco:</strong> <?php echo htmlspecialchars($paciente['responsavel_parentesco'] ?? ''); ?></td></tr>
+            <tr><td colspan="2"><strong>--- FIM DADOS RESPONSÁVEL ---</strong></td></tr>
+            <?php endif; ?>
+            
+            <!-- Campo religião removido conforme solicitação -->
             <tr><td><strong>Usa Medicamentos:</strong> <?php echo htmlspecialchars($paciente['toma_algum_medicamento']); ?></td></tr>
             <tr><td><strong>Qual:</strong> <?php echo htmlspecialchars($paciente['qual_medicamento']); ?></td></tr>
-            <tr><td><strong>Rede de Apoio:</strong> <?php echo htmlspecialchars($paciente['rede_de_apoio']); ?></td></tr>
+            
+            <!-- Campo rede de apoio melhorado -->
+            <tr><td><strong>Rede de Apoio:</strong> <pre style="white-space: pre-wrap; font-family: inherit;"><?php echo htmlspecialchars($paciente['rede_de_apoio']); ?></pre></td></tr>
+            
             <tr><td><strong>Contato de Emergência:</strong> <?php echo htmlspecialchars($paciente['contato_de_emergencia']); ?></td></tr>
             <tr><td><strong>Psicoterapia Anterior:</strong> <?php echo htmlspecialchars($paciente['atendimento']); ?></td></tr>
-            <tr><td><strong>Detalhes:</strong> <?php echo htmlspecialchars($paciente['atendimento_tipo_tempo_motivo']); ?></td></tr>
+            
+            <!-- Campos separados conforme nova estrutura -->
+            <tr><td><strong>Tipo de Atendimento Ofertado:</strong> <pre style="white-space: pre-wrap; font-family: inherit;"><?php echo htmlspecialchars($paciente['tipo_atendimento_ofertado'] ?? $paciente['atendimento_tipo_tempo_motivo'] ?? ''); ?></pre></td></tr>
+            <tr><td><strong>Motivo da Procura/Queixa:</strong> <pre style="white-space: pre-wrap; font-family: inherit;"><?php echo htmlspecialchars($paciente['motivo_procura_queixa'] ?? $paciente['motivo_e_objetivo'] ?? ''); ?></pre></td></tr>
+            
             <tr><td><strong>Disponibilidade:</strong> <?php echo htmlspecialchars($paciente['disponibilidade']); ?></td></tr>
-            <tr><td><strong>Objetivo:</strong> <?php echo htmlspecialchars($paciente['motivo_e_objetivo']); ?></td></tr>
         </tbody>
     </table>
 
@@ -107,7 +127,11 @@ require_once 'includes/header.php';
             <tr><td><strong>CPF:</strong> <?php echo htmlspecialchars($paciente['cpf']); ?></td></tr>
             <tr><td><strong>Email:</strong> <?php echo htmlspecialchars($paciente['email']); ?></td></tr>
             <tr><td><strong>Telefone:</strong> <?php echo htmlspecialchars($paciente['telefone']); ?></td></tr>
-            <tr><td><strong>Observações:</strong> <?php echo htmlspecialchars($paciente['observacoes']); ?></td></tr>
+            <!-- Novo campo: Telefone Alternativo -->
+            <?php if (!empty($paciente['telefone_alternativo'])): ?>
+            <tr><td><strong>Telefone Alternativo:</strong> <?php echo htmlspecialchars($paciente['telefone_alternativo']); ?></td></tr>
+            <?php endif; ?>
+            <tr><td><strong>Observações:</strong> <pre style="white-space: pre-wrap; font-family: inherit;"><?php echo htmlspecialchars($paciente['observacoes']); ?></pre></td></tr>
         </tbody>
     </table>
 </section>
@@ -123,7 +147,9 @@ require_once 'includes/header.php';
                 <tr>
                     <th>Data do Pagamento</th>
                     <th>Forma de Pagamento</th>
+                    <th>Tipo</th>
                     <th>Valor</th>
+                    <th>Receita Saúde</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -133,13 +159,23 @@ require_once 'includes/header.php';
                         <tr>
                             <td><?php echo formatDate($pagamento['data_pagamento']); ?></td>
                             <td><?php echo htmlspecialchars($pagamento['forma_pagamento']); ?></td>
-                            <td><strong><?php echo formatCurrency($pagamento['valor']); ?></strong></td>
+                            <td><?php echo htmlspecialchars($pagamento['tipo_pagamento'] ?? 'Particular'); ?></td>
                             <td>
+                                <strong><?php echo formatCurrency($pagamento['valor']); ?></strong>
+                                <?php if (!empty($pagamento['valor_intermediado'])): ?>
+                                    <br><small>Intermediado: <?php echo formatCurrency($pagamento['valor_intermediado']); ?></small>
+                                <?php endif; ?>
+                            </td>
+                            <td><?php echo htmlspecialchars($pagamento['recibo_receita_saude'] ?? 'Não'); ?></td>
+                            <td>
+                                <?php if (!empty($pagamento['observacoes_pagamento'])): ?>
+                                    <small title="<?php echo htmlspecialchars($pagamento['observacoes_pagamento']); ?>">📝</small><br>
+                                <?php endif; ?>
                                 <form action="payment_delete.php" method="post" style="display:inline;">
                                     <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                                     <input type="hidden" name="patient_id" value="<?php echo $paciente['id']; ?>">
                                     <input type="hidden" name="payment_id" value="<?php echo $pagamento['id']; ?>">
-                                    <button class="btn" type="submit" onclick="return confirm('Tem certeza que deseja excluir este pagamento?');">Excluir Pagamento</button>
+                                    <button class="btn" type="submit" onclick="return confirm('Tem certeza que deseja excluir este pagamento?');">Excluir</button>
                                 </form>
                             </td>
                         </tr>

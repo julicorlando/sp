@@ -234,32 +234,69 @@ require_once 'includes/header.php';
                    value="<?php echo htmlspecialchars($paciente['email']); ?>">
         </p>
         
+        <!-- Campo atualizado: Possui Filhos -->
         <p>
-            <label for="id_filhos">Filhos:</label>
-            <?php echo generateSelect('filhos', $options['sim_nao'], $paciente['filhos'], 'id="id_filhos" required'); ?>
+            <label for="id_possui_filhos">Possui Filhos?</label>
+            <?php echo generateSelect('possui_filhos', $options['sim_nao'], $paciente['possui_filhos'] ?? $paciente['filhos'] ?? '', 'id="id_possui_filhos" required'); ?>
         </p>
         
+        <!-- Novo campo: Menor de Idade/Tutelado -->
         <p>
-            <label for="id_filhos_quantidade">Quantidade de filhos:</label>
-            <input type="text" name="filhos_quantidade" id="id_filhos_quantidade" maxlength="10"
-                   value="<?php echo htmlspecialchars($paciente['filhos_quantidade']); ?>">
+            <label for="id_e_menor_tutelado">É menor de idade ou tutelado?</label>
+            <?php echo generateSelect('e_menor_tutelado', $options['sim_nao'], $paciente['e_menor_tutelado'] ?? 'Não', 'id="id_e_menor_tutelado" required onchange="toggleResponsavelFields()"'); ?>
         </p>
+        
+        <!-- Seção de dados do responsável (mostrada apenas quando menor/tutelado = Sim) -->
+        <div id="responsavel_section" style="display: none;">
+            <h3>Dados do Responsável</h3>
+            <p>
+                <label for="id_responsavel_nome">Nome do responsável:</label>
+                <input type="text" name="responsavel_nome" id="id_responsavel_nome" maxlength="100"
+                       value="<?php echo htmlspecialchars($paciente['responsavel_nome'] ?? ''); ?>">
+            </p>
+            
+            <p>
+                <label for="id_responsavel_cpf">CPF do responsável:</label>
+                <input type="text" name="responsavel_cpf" id="id_responsavel_cpf" maxlength="11"
+                       value="<?php echo htmlspecialchars($paciente['responsavel_cpf'] ?? ''); ?>"
+                       pattern="[0-9]{11}" placeholder="Apenas números">
+            </p>
+            
+            <p>
+                <label for="id_responsavel_endereco">Endereço do responsável:</label>
+                <input type="text" name="responsavel_endereco" id="id_responsavel_endereco" maxlength="255"
+                       value="<?php echo htmlspecialchars($paciente['responsavel_endereco'] ?? ''); ?>">
+            </p>
+            
+            <p>
+                <label for="id_responsavel_contato">Contato do responsável:</label>
+                <input type="text" name="responsavel_contato" id="id_responsavel_contato" maxlength="15"
+                       value="<?php echo htmlspecialchars($paciente['responsavel_contato'] ?? ''); ?>">
+            </p>
+            
+            <p>
+                <label for="id_responsavel_parentesco">Grau de parentesco:</label>
+                <?php echo generateSelect('responsavel_parentesco', $options['parentesco'], $paciente['responsavel_parentesco'] ?? '', 'id="id_responsavel_parentesco"'); ?>
+            </p>
+        </div>
         
         <p>
             <label for="id_atendimento">Atendimento:</label>
             <?php echo generateSelect('atendimento', $options['sim_nao'], $paciente['atendimento'], 'id="id_atendimento" required'); ?>
         </p>
         
+        <!-- Campos separados conforme solicitação -->
         <p>
-            <label for="id_atendimento_tipo_tempo_motivo">Tipo/Tempo/Motivo do atendimento:</label>
-            <textarea name="atendimento_tipo_tempo_motivo" id="id_atendimento_tipo_tempo_motivo" maxlength="500"><?php echo htmlspecialchars($paciente['atendimento_tipo_tempo_motivo']); ?></textarea>
+            <label for="id_tipo_atendimento_ofertado">Tipo de Atendimento Ofertado:</label>
+            <textarea name="tipo_atendimento_ofertado" id="id_tipo_atendimento_ofertado" maxlength="500" placeholder="Descreva o tipo de atendimento que será oferecido..."><?php echo htmlspecialchars($paciente['tipo_atendimento_ofertado'] ?? $paciente['atendimento_tipo_tempo_motivo'] ?? ''); ?></textarea>
         </p>
         
         <p>
-            <label for="id_religiao">Religião:</label>
-            <input type="text" name="religiao" id="id_religiao" maxlength="20"
-                   value="<?php echo htmlspecialchars($paciente['religiao']); ?>">
+            <label for="id_motivo_procura_queixa">Motivo da Procura/Queixa:</label>
+            <textarea name="motivo_procura_queixa" id="id_motivo_procura_queixa" maxlength="500" placeholder="Descreva o motivo da procura ou queixa do paciente..."><?php echo htmlspecialchars($paciente['motivo_procura_queixa'] ?? $paciente['motivo_e_objetivo'] ?? ''); ?></textarea>
         </p>
+        
+        <!-- Campo religião removido conforme solicitação -->
         
         <p>
             <label for="id_escolaridade">Escolaridade:</label>
@@ -294,10 +331,10 @@ require_once 'includes/header.php';
                    value="<?php echo htmlspecialchars($paciente['disponibilidade']); ?>">
         </p>
         
+        <!-- Campo rede de apoio melhorado para texto livre -->
         <p>
             <label for="id_rede_de_apoio">Rede de apoio:</label>
-            <input type="text" name="rede_de_apoio" id="id_rede_de_apoio" maxlength="255"
-                   value="<?php echo htmlspecialchars($paciente['rede_de_apoio']); ?>">
+            <textarea name="rede_de_apoio" id="id_rede_de_apoio" maxlength="1000" placeholder="Descreva a rede de apoio do paciente (família, amigos, instituições, etc.)"><?php echo htmlspecialchars($paciente['rede_de_apoio']); ?></textarea>
         </p>
         
         <p>
@@ -306,10 +343,7 @@ require_once 'includes/header.php';
                    value="<?php echo htmlspecialchars($paciente['contato_de_emergencia']); ?>">
         </p>
         
-        <p>
-            <label for="id_motivo_e_objetivo">Motivo e objetivo:</label>
-            <textarea name="motivo_e_objetivo" id="id_motivo_e_objetivo" maxlength="500"><?php echo htmlspecialchars($paciente['motivo_e_objetivo']); ?></textarea>
-        </p>
+        <!-- Campo motivo_e_objetivo removido pois foi separado em tipo_atendimento_ofertado e motivo_procura_queixa -->
         
         <p>
             <label for="id_observacoes">Observações:</label>
@@ -322,5 +356,34 @@ require_once 'includes/header.php';
         </div>
     </form>
 </main>
+
+<!-- JavaScript para controle de exibição dos campos do responsável -->
+<script>
+function toggleResponsavelFields() {
+    const menorTutelado = document.getElementById('id_e_menor_tutelado').value;
+    const responsavelSection = document.getElementById('responsavel_section');
+    
+    if (menorTutelado === 'Sim') {
+        responsavelSection.style.display = 'block';
+        // Tornar campos obrigatórios
+        document.getElementById('id_responsavel_nome').required = true;
+        document.getElementById('id_responsavel_cpf').required = true;
+        document.getElementById('id_responsavel_contato').required = true;
+        document.getElementById('id_responsavel_parentesco').required = true;
+    } else {
+        responsavelSection.style.display = 'none';
+        // Remover obrigatoriedade
+        document.getElementById('id_responsavel_nome').required = false;
+        document.getElementById('id_responsavel_cpf').required = false;
+        document.getElementById('id_responsavel_contato').required = false;
+        document.getElementById('id_responsavel_parentesco').required = false;
+    }
+}
+
+// Executar ao carregar a página para casos de reload com dados preenchidos
+document.addEventListener('DOMContentLoaded', function() {
+    toggleResponsavelFields();
+});
+</script>
 
 <?php require_once 'includes/footer.php'; ?>

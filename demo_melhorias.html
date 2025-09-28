@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Pacientes - Melhorias Implementadas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .form-cadastro {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .form-cadastro p {
+            margin-bottom: 15px;
+        }
+        .form-cadastro label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-cadastro input, .form-cadastro select, .form-cadastro textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .form-cadastro textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: #007cba;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        #responsavel_section {
+            border: 2px solid #007cba;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f0f8ff;
+            margin: 15px 0;
+        }
+        .highlight {
+            background-color: #ffff99;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .new-field {
+            border-left: 4px solid #28a745;
+            padding-left: 10px;
+        }
+        .removed-field {
+            border-left: 4px solid #dc3545;
+            padding-left: 10px;
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Sistema de Pacientes - Melhorias Implementadas</h1>
+    
+    <div style="background: #d4edda; padding: 15px; border-radius: 5px; margin: 20px 0;">
+        <h2>✅ Todas as melhorias solicitadas foram implementadas com sucesso!</h2>
+        <p><strong>Status:</strong> Implementação completa das melhorias no cadastro e pagamentos</p>
+    </div>
+
+    <h2>📋 Formulário de Cadastro de Paciente - ANTES vs DEPOIS</h2>
+    
+    <form class="form-cadastro">
+        <h3>Informações Básicas</h3>
+        
+        <p>
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" required maxlength="100" placeholder="Nome completo do paciente">
+        </p>
+        
+        <p>
+            <label for="estado_civil">Estado civil:</label>
+            <select name="estado_civil" id="estado_civil" required>
+                <option value="">Selecione...</option>
+                <option value="Não Informado">Não Informado</option>
+                <option value="Casado(a)">Casado(a)</option>
+                <option value="Solteiro(a)">Solteiro(a)</option>
+                <option value="Divorciado(a)">Divorciado(a)</option>
+                <option value="Viúvo(a)">Viúvo(a)</option>
+                <option value="Não se aplica" class="highlight">🆕 Não se aplica</option>
+            </select>
+        </p>
+        
+        <p>
+            <label for="telefone">Telefone:</label>
+            <input type="text" name="telefone" id="telefone" required maxlength="15" placeholder="Telefone principal">
+        </p>
+        
+        <p class="new-field">
+            <label for="telefone_alternativo">🆕 Telefone alternativo:</label>
+            <input type="text" name="telefone_alternativo" id="telefone_alternativo" maxlength="15" placeholder="Telefone alternativo (opcional)">
+        </p>
+        
+        <p>
+            <label for="escolaridade">Escolaridade:</label>
+            <select name="escolaridade" id="escolaridade" required>
+                <option value="">Selecione...</option>
+                <option value="Sem escolaridade" class="highlight">🆕 Sem escolaridade</option>
+                <option value="Fundamental">Fundamental</option>
+                <option value="Médio">Médio</option>
+                <option value="Superior Completo">Superior Completo</option>
+                <option value="Superior incompleto">Superior incompleto</option>
+                <option value="Pós-Graduação">Pós-Graduação</option>
+                <option value="Mestrado">Mestrado</option>
+                <option value="Doutorado">Doutorado</option>
+            </select>
+        </p>
+        
+        <p>
+            <label for="possui_filhos">🔄 Possui Filhos? (alterado de "Filhos"):</label>
+            <select name="possui_filhos" id="possui_filhos" required>
+                <option value="">Selecione...</option>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+            </select>
+        </p>
+        
+        <p class="removed-field">
+            <label>❌ Religião: (REMOVIDO conforme solicitação)</label>
+            <input type="text" disabled placeholder="Campo removido">
+        </p>
+        
+        <p class="new-field">
+            <label for="e_menor_tutelado">🆕 É menor de idade ou tutelado?</label>
+            <select name="e_menor_tutelado" id="e_menor_tutelado" required onchange="toggleResponsavelFields()">
+                <option value="">Selecione...</option>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+            </select>
+        </p>
+        
+        <div id="responsavel_section" style="display: none;">
+            <h3>🆕 Dados do Responsável</h3>
+            <p>
+                <label for="responsavel_nome">Nome do responsável:</label>
+                <input type="text" name="responsavel_nome" id="responsavel_nome" maxlength="100" placeholder="Nome completo do responsável">
+            </p>
+            
+            <p>
+                <label for="responsavel_cpf">CPF do responsável:</label>
+                <input type="text" name="responsavel_cpf" id="responsavel_cpf" maxlength="11" pattern="[0-9]{11}" placeholder="Apenas números">
+            </p>
+            
+            <p>
+                <label for="responsavel_contato">Contato do responsável:</label>
+                <input type="text" name="responsavel_contato" id="responsavel_contato" maxlength="15" placeholder="Telefone do responsável">
+            </p>
+            
+            <p>
+                <label for="responsavel_parentesco">Grau de parentesco:</label>
+                <select name="responsavel_parentesco" id="responsavel_parentesco">
+                    <option value="">Selecione...</option>
+                    <option value="Pai">Pai</option>
+                    <option value="Mãe">Mãe</option>
+                    <option value="Avô">Avô</option>
+                    <option value="Avó">Avó</option>
+                    <option value="Tio">Tio</option>
+                    <option value="Tia">Tia</option>
+                    <option value="Tutor Legal">Tutor Legal</option>
+                    <option value="Outro">Outro</option>
+                </select>
+            </p>
+        </div>
+        
+        <h3>Informações de Atendimento</h3>
+        
+        <p>
+            <label for="tipo_atendimento_ofertado">🔄 Tipo de Atendimento Ofertado (SEPARADO):</label>
+            <textarea name="tipo_atendimento_ofertado" id="tipo_atendimento_ofertado" maxlength="500" placeholder="Descreva o tipo de atendimento que será oferecido..."></textarea>
+        </p>
+        
+        <p>
+            <label for="motivo_procura_queixa">🔄 Motivo da Procura/Queixa (SEPARADO):</label>
+            <textarea name="motivo_procura_queixa" id="motivo_procura_queixa" maxlength="500" placeholder="Descreva o motivo da procura ou queixa do paciente..."></textarea>
+        </p>
+        
+        <p>
+            <label for="rede_de_apoio">🔄 Rede de apoio (MELHORADO - texto livre):</label>
+            <textarea name="rede_de_apoio" id="rede_de_apoio" maxlength="1000" placeholder="Descreva a rede de apoio do paciente (família, amigos, instituições, etc.)"></textarea>
+        </p>
+        
+        <div class="form-buttons">
+            <button type="button" class="btn-primary">💾 Salvar Paciente</button>
+            <button type="button" class="btn-secondary">🔄 Limpar</button>
+        </div>
+    </form>
+
+    <h2>💰 Formulário de Pagamento - MELHORIAS</h2>
+    
+    <form class="form-cadastro">
+        <p>
+            <label for="valor">Valor (R$):</label>
+            <input type="number" name="valor" id="valor" required min="0.01" step="0.01" placeholder="0,00">
+        </p>
+        
+        <p>
+            <label for="forma_pagamento">Forma de pagamento:</label>
+            <select name="forma_pagamento" id="forma_pagamento" required>
+                <option value="">Selecione...</option>
+                <option value="Pix">Pix</option>
+                <option value="Dinheiro">Dinheiro</option>
+                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                <option value="Cartão de Débito">Cartão de Débito</option>
+            </select>
+        </p>
+        
+        <p class="new-field">
+            <label for="tipo_pagamento">🆕 Tipo de pagamento:</label>
+            <select name="tipo_pagamento" id="tipo_pagamento" required onchange="toggleValorIntermediado()">
+                <option value="Particular">Particular</option>
+                <option value="Convênio">Convênio</option>
+                <option value="Clínica">Clínica</option>
+            </select>
+        </p>
+        
+        <p id="valor_intermediado_section" class="new-field" style="display: none;">
+            <label for="valor_intermediado">🆕 Valor intermediado (R$):</label>
+            <input type="number" name="valor_intermediado" id="valor_intermediado" min="0" step="0.01" placeholder="Valor quando há convênio ou clínica">
+        </p>
+        
+        <p class="new-field">
+            <label for="recibo_receita_saude">🆕 Recibo emitido via Receita Saúde:</label>
+            <select name="recibo_receita_saude" id="recibo_receita_saude">
+                <option value="Não">Não</option>
+                <option value="Sim">Sim</option>
+            </select>
+        </p>
+        
+        <p class="new-field">
+            <label for="observacoes_pagamento">🆕 Observações sobre o pagamento:</label>
+            <textarea name="observacoes_pagamento" id="observacoes_pagamento" maxlength="500" placeholder="Observações específicas sobre este pagamento..."></textarea>
+        </p>
+        
+        <div class="form-buttons">
+            <button type="button" class="btn-primary">💰 Salvar Pagamento</button>
+            <button type="button" class="btn-secondary">❌ Cancelar</button>
+        </div>
+    </form>
+
+    <div style="background: #cce5ff; padding: 15px; border-radius: 5px; margin: 20px 0;">
+        <h3>🎉 Resumo das Melhorias Implementadas:</h3>
+        <ul>
+            <li>✅ <strong>Estado Civil:</strong> Adicionada opção "Não se aplica"</li>
+            <li>✅ <strong>Telefone:</strong> Campo adicional para telefone alternativo</li>
+            <li>✅ <strong>Filhos:</strong> Alterado para "Possui Filhos?" (Sim/Não)</li>
+            <li>✅ <strong>Menor/Tutelado:</strong> Campos completos para dados do responsável</li>
+            <li>✅ <strong>Escolaridade:</strong> Adicionada opção "Sem escolaridade"</li>
+            <li>✅ <strong>Religião:</strong> Campo removido conforme solicitação</li>
+            <li>✅ <strong>Rede de Apoio:</strong> Melhorado para texto livre estruturado</li>
+            <li>✅ <strong>Atendimento:</strong> Separado em "Tipo Ofertado" e "Motivo da Procura"</li>
+            <li>✅ <strong>Pagamentos:</strong> Checkbox Receita Saúde + Tipo de pagamento</li>
+            <li>✅ <strong>Database:</strong> Schema atualizado + script de migração</li>
+        </ul>
+    </div>
+
+    <script>
+        function toggleResponsavelFields() {
+            const menorTutelado = document.getElementById('e_menor_tutelado').value;
+            const responsavelSection = document.getElementById('responsavel_section');
+            
+            if (menorTutelado === 'Sim') {
+                responsavelSection.style.display = 'block';
+            } else {
+                responsavelSection.style.display = 'none';
+            }
+        }
+
+        function toggleValorIntermediado() {
+            const tipoPagamento = document.getElementById('tipo_pagamento').value;
+            const valorIntermediado = document.getElementById('valor_intermediado_section');
+            
+            if (tipoPagamento === 'Convênio' || tipoPagamento === 'Clínica') {
+                valorIntermediado.style.display = 'block';
+            } else {
+                valorIntermediado.style.display = 'none';
+            }
+        }
+
+        // Simular interatividade
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mostrar exemplo dos campos do responsável
+            setTimeout(() => {
+                document.getElementById('e_menor_tutelado').value = 'Sim';
+                toggleResponsavelFields();
+            }, 2000);
+
+            // Mostrar exemplo do valor intermediado
+            setTimeout(() => {
+                document.getElementById('tipo_pagamento').value = 'Convênio';
+                toggleValorIntermediado();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
